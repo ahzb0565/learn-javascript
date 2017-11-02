@@ -1,6 +1,6 @@
 
 
-describe('Charpter 6: Inherit', function(){
+describe('Chapter 6: Object', function(){
     var inherit = require('../lib/myLib');
     var book;
 
