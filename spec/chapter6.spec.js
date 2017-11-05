@@ -1,7 +1,7 @@
 
 
 describe('Chapter 6: Object', function(){
-    var inherit = require('../lib/myLib');
+    var inherit = require('../lib/myLib').inherit;
     var book;
 
     beforeEach(function(){

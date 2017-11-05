@@ -1,4 +1,4 @@
-var inherit = require('../lib/myLib');
+var inherit = require('../lib/myLib').inherit;
 
 describe('Chapter 9 class', function(){
     it('9.1 class and prototype: A simple javascript class', function(){
@@ -81,7 +81,7 @@ describe('Chapter 9 class', function(){
             G.prototype.foreach = function(){};
         });
     });
-    it('Java style clases', function(){
+    it('9.3 Java style clases', function(){
         function Person(name){
             this.name = name;  // instance field
         }
@@ -93,7 +93,7 @@ describe('Chapter 9 class', function(){
         var Jim = Person.create('Jim');
         expect(Jim.sayHi()).toBe('Hi, I\'m Jim');
     });
-    it('augmenting classes', function(){
+    it('9.4 augmenting classes', function(){
         function Person(name){
             this.name = name;
         }
@@ -101,5 +101,66 @@ describe('Chapter 9 class', function(){
         expect(person.sayHi).toBeUndefined();
         Person.prototype.sayHi = function(){return 'Hi, i\'m Jim';};
         expect(person.sayHi()).toBe('Hi, i\'m Jim');
-    })
+    });
+    describe('9.5 classes and types', function(){
+        var F
+        beforeEach(function(){
+            F = function(){};
+        });
+
+        it('Using instanceof', function(){
+            var p = {};
+            F.prototype = p;
+            var f = new F();
+            expect(p.isPrototypeOf(f)).toBe(true);
+            expect(f instanceof F);
+        });
+        it('Using constructor', function(){
+            expect(new Number(5).constructor).toEqual(Number);
+            expect('test'.constructor).toEqual(String);
+            expect(true.constructor).toEqual(Boolean);
+
+            var p = {};
+            F.prototype = p;
+            expect(p.constructor).not.toBe(F);  // not works on this case
+        });
+        it('Using constructor name', function(){
+            function F(){};
+            F.prototype.getName = function(){
+                return this.constructor.toString().match(/function\s+(\S+)\(/)[1];
+            };
+            var f = new F();
+            expect(f.getName()).toEqual('F');
+        });
+        it('Duck typing', function(){});
+    });
+    describe('9.6 OO', function(){
+        it('Set', function(){
+            var Set = require('../lib/MyLib').Set;
+            var s = new Set();
+            s.add(1,2,'test');
+            expect(s.contains(2)).toBe(true);
+            s.remove(2, 'test');
+            expect(s.contains(2)).toBe(false);
+        });
+        it('enumerate', function(){
+            var enumeration = require('../lib/myLib').enumeration;
+            var Coin = enumeration({Penny: 1, Nickel: 5, Dime: 10, Quarter: 25});
+            var c = Coin.Dime;
+            expect(c instanceof Coin).toBe(true);
+            expect(c.constructor == Coin).toBe(true);
+            expect(Coin.Quarter + 3*Coin.Nickel).toEqual(40);
+            expect(Coin.Dime == 10).toBe(true);
+            expect(Coin.Dime > Coin.Nickel).toBe(true);
+            expect(String(Coin.Dime) + ':' + Coin.Dime).toEqual('Dime:10')
+        });
+        it('standard conversion method', function(){
+            var Set = require('../lib/MyLib').Set;
+            var s = new Set();
+            s.add(1,2,'test');
+            console.log(s.toString());
+            console.log(s.toJSON());
+            console.log(s.toLocaleString());
+        })
+    });
 });
