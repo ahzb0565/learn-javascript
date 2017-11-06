@@ -158,9 +158,37 @@ describe('Chapter 9 class', function(){
             var Set = require('../lib/MyLib').Set;
             var s = new Set();
             s.add(1,2,'test');
-            console.log(s.toString());
-            console.log(s.toJSON());
-            console.log(s.toLocaleString());
-        })
+            console.log(s.toString());  // ???
+            console.log(s.toJSON());  // ???
+            console.log(s.toLocaleString());  // ???
+        });
+        it('equals', function(){
+            function F(a){
+                this.a = a;
+            }
+
+            F.prototype.equals = function(item){
+                if(this === item) return true;
+                if(item == null || item.constructor!= F) return false;
+                return this.a == item.a;
+            }
+            var o = new F(1), p = new F(2);
+            expect(o.equals(q)).toBe(true);
+        });
+    });
+    describe('9.7 subclass', function(){
+        it('defined a subclass', function(){
+            // B.prototype = inherit(A); B.prototype.constructor = B; or
+            function definedSubclass(superclass, constructor, methods, statics){
+                constructor.prototype = inherit(superclass.prototype);
+                constructor.prototype.constructor = constructor;
+                if(methods) extend(constructor.prototype, methods);
+                if(statics) extend(constructor, methods);
+                return constructor;
+            }
+        });
+        it('Constructor and method chain', function(){});
+        it('Composition versus subclassing',m function(){});
+        it('Classes hierarchies and abstract classes', function(){});
     });
 });
