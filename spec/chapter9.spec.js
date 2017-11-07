@@ -172,7 +172,8 @@ describe('Chapter 9 class', function(){
                 if(item == null || item.constructor!= F) return false;
                 return this.a == item.a;
             }
-            var o = new F(1), p = new F(2);
+            var o = new F(1), p = new F(2), q = new F(1);
+            expect(o.equals(p)).toBe(false);
             expect(o.equals(q)).toBe(true);
         });
     });
@@ -188,7 +189,7 @@ describe('Chapter 9 class', function(){
             }
         });
         it('Constructor and method chain', function(){});
-        it('Composition versus subclassing',m function(){});
+        it('Composition versus subclassing', function(){});
         it('Classes hierarchies and abstract classes', function(){});
     });
 });
