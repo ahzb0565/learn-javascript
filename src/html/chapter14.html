@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chapter 14: windows object</title>
+</head>
+<p>Hello world!</p>
+<div>
+    14.1: setTimeout/clearTimeout and setInterval/clearInterval<br>
+    <button onclick="timeoutResult()">timeout result(2 seconds)</button>
+    <button onclick="intervalResult()">Interval result</button>
+    <br>
+    14.2: location<br>
+    <button onclick="getWindowLocaton()">window.Location</button>
+    <button onclick="locationReplace()">window.location.replace</button>
+    <button onclick="reload()">window.location.reload</button>
+    <br>
+    14.3: history<br>
+    <button onclick="historyBack()">window.history.back</button>
+    <button onclick="historyForward()">window.history.forward</button>
+    <button onclick="historyGo()">window.history.go(-2)</button>
+    <br>
+    14.3: Browser and Screen<br>
+    <button onclick="showNavigator()">show navigator</button>
+    <h3>Result:</h3>
+    <pre id="result" style="border: 1px solid; min-height: 120px; border-radius: 5px; padding: 5px"></pre>
+</div>
+<script type="text/javascript">
+function timeoutResult(){
+    setTimeout(function(){showResult.call(this, 'timeout 2 seconds');}, 2000);
+}
+
+// window.location document.location
+function showResult(result){
+    var e = document.getElementById('result');
+    e.innerHTML = ''; // clear
+    e.innerHTML = result;
+}
+
+function intervalResult(){
+    var repeat = setInterval(function(){
+        var prv = document.getElementById('result').innerHTML;
+        prv += '=>';
+        showResult.call(null, prv);
+    }, 1000);
+    setTimeout(function(){clearInterval(repeat, 10000); showResult('Timeout!')}, 10000);
+}
+
+function getWindowLocaton(){
+    showResult(JSON.stringify(location, null, 4));
+}
+
+function locationReplace(){
+    location.replace('chapter15.html');
+}
+
+function reload(){
+    location.reload();
+}
+
+function historyBack(){
+    history.back();
+}
+
+function historyForward(){
+    history.forward();
+}
+
+function historyGo(){
+    history.go(-2);
+}
+
+function showNavigator(){
+    var result = {};
+    for( i in navigator){
+        if(typeof i == 'object' || typeof i == 'function')
+            result[i] = typeof i;
+        else
+            result[i] = navigator[i];
+    }
+
+    showResult(JSON.stringify(result, null, 4));
+}
+
+</script>
+</html>
