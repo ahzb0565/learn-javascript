@@ -19,12 +19,85 @@
     <button onclick="historyForward()">window.history.forward</button>
     <button onclick="historyGo()">window.history.go(-2)</button>
     <br>
-    14.3: Browser and Screen<br>
+    14.4: Browser and Screen<br>
     <button onclick="showNavigator()">show navigator</button>
+    <button onclick="showScreen()">show screen info</button>
+    <br>
+    14.5: dilog boxes<br>
+    <button onclick="showAlert()">show alert</button>
+    <button onclick="showConfirm()">show confirm</button>
+    <button onclick="showPrompt()"> show prompt</button>
+    <button onclick="showMyModalDialog()">showModalDialog</button>
+    <br>
+    14.6: Error handling<br>
+    <button onclick="showOnerror()">show onerror</button>
+    <br>
+    14.7: document elements as window properties<br>
+    14.8: Multiple Windows and frames<br>
+    <button onclick="openBlank()">open a blank page</button>
+    <button onclick="openPageWithName()">open a page with name</button>
+    <button onclick="openSmallWin()">open smallwin</button>
+    <button onclick="openAndAlert()">open a window and control</button>
+    <button onclick="openAndClose()">open and close</button>
     <h3>Result:</h3>
     <pre id="result" style="border: 1px solid; min-height: 120px; border-radius: 5px; padding: 5px"></pre>
 </div>
 <script type="text/javascript">
+function openAndClose(){
+    var w = open();
+    w.alert('Close me, and this window will closed after 2 seconds');
+    w.setTimeout(function(){w.close();}, 2000);
+
+}
+
+function openAndAlert(){
+    var w = open();
+    w.alert('This alert comes from previous page, that\'s cool!');
+}
+
+function openSmallWin(){
+    open('smallwin.html', 'smallwin', 'width=400, height=300, resizable=yes');
+}
+
+function openPageWithName(){
+    open('', 'newBlank');
+    showResult("New page opened, and you can check it\'s name by 'console.log(window.name)'");
+}
+function openBlank(){
+    open();
+}
+
+function showOnerror(){
+    onerror = function(msg, url, line){
+        showResult(JSON.stringify({error: msg, url: url, line: line}, null, 4));
+    };
+    throw Error('My error');
+}
+
+function showMyModalDialog(){
+    var result = showModalDialog(
+        'myModalDialog.html',
+        ['Enter you personal infomation', 'name', 'age', 'sex'],
+        "dialogwidth:400; dialogheight: 300; resizable: yes; dialogtop: 100"
+    );
+    showResult(JSON.stringify(result, null, 4));
+}
+
+function showPrompt(){
+    var result = prompt('Enter your name please: ');
+    if (result)
+        showResult('Hi ' + result);
+}
+
+function showConfirm(){
+    var result = confirm('test confirm');
+    showResult('Your choice is :'+ (result? ' OK': ' Cancel'));
+}
+
+function showAlert(){
+    alert('test alert');
+}
+
 function timeoutResult(){
     setTimeout(function(){showResult.call(this, 'timeout 2 seconds');}, 2000);
 }
@@ -78,6 +151,15 @@ function showNavigator(){
             result[i] = navigator[i];
     }
 
+    showResult(JSON.stringify(result, null, 4));
+}
+
+function showScreen(){
+    var result = {};
+    for (v in screen){
+        if(typeof screen[v] != 'function')
+            result[v] = screen[v];
+    }
     showResult(JSON.stringify(result, null, 4));
 }
 
